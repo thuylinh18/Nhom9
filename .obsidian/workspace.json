@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Acceptance Criteria/AC.md",
+                "file": "Figma/Figma design.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "AC"
+              "title": "Figma design"
             }
           }
         ]
@@ -189,6 +189,13 @@
   },
   "active": "fedb43ef732b624c",
   "lastOpenFiles": [
+    "Nhom9/vault/05-Design/Usability Test Script.md",
+    "Figma/Figma design.md",
+    "Figma",
+    "Nhom9/vault/05-Design/Usability Findings.md",
+    "Nhom9/vault/05-Design/screen-flow.md",
+    "Nhom9/vault/05-Design/Decision Log.md",
+    "Acceptance Criteria/AC.md",
     "User Stories/User Stories.md",
     "Use-cases/Use-cases/UC-015-xem_survey_dashboard.md",
     "Use-cases/Use-cases/UC-014-xem_ket_qua_phan_tich_AI.md",
@@ -205,18 +212,12 @@
     "Use-cases/Use-cases/UC-003-chinh_sua_survey.md",
     "Use-cases/Use-cases/UC-002-tao_survey.md",
     "Use-cases/Use-cases/UC-001-dang_nhap.md",
-    "Acceptance Criteria/AC.md",
     "Acceptance Criteria",
     "User Stories",
     "Nhom9/vault/04-Product/PRD.md",
     "Nhom9/vault/00-Index/source-priority.md",
     "Nhom9/vault/02-Requiments/Functional Requirements.md",
     "Nhom9/vault/01-Source/Customer Brief.md",
-    "Nhom9/vault/00-Index/Index.md",
-    "Nhom9/vault/02-Requiments/business-rules.md",
-    "Nhom9/vault/01-Source/Interview Notes.md",
-    "Nhom9/vault/03-Domain/Glossary.md",
-    "Nhom9/vault/03-Domain/business-rules.md",
     "Untitled 4.base",
     "Untitled 5.base",
     "Untitled 3.base",
@@ -224,7 +225,6 @@
     "Untitled 1.base",
     "Untitled.canvas",
     "Untitled.base",
-    "01-Requirements",
-    "Idea"
+    "01-Requirements"
   ]
 }
