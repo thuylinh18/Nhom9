@@ -107,7 +107,7 @@ Thư mục `09-meetings/` chứa meeting notes, action items và các nội dung
 
 Khi AI hoặc thành viên project cần trả lời câu hỏi:
 
-1. Ưu tiên tài liệu trong `01-Source/`.
+1. Ưu tiên tài liệu trong 
 2. Requirement chính thức lấy từ `02-Requirements/`.
 3. Domain knowledge lấy từ `03-Domain/`.
 4. Các quyết định đã được xác nhận lấy từ `08-decisions/`.

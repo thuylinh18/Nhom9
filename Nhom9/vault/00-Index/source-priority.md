@@ -97,10 +97,10 @@ Các tài liệu requirement trong `02-Requirements/` là phiên bản requireme
 
 Ví dụ:
 
-- `Functional Requirements`
-- `non-functional-requirements`
-- `business-rules.md`
-- `open-questions.md`
+- `Functional Requirements` [[Functional Requirements]]
+- `non-functional-requirements`[[non-functional-requirements]]
+- `business-rules.md`[[Nhom9/vault/02-Requiments/business-rules]]
+- `open-questions.md`[[Nhom9/vault/02-Requiments/open-questions]]
 
 Các requirement phải có khả năng truy ngược về source.
 

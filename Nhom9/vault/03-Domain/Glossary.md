@@ -31,14 +31,6 @@ Researcher có thể:
 - Publish survey.
 - Close survey.
 
-Related requirements:
-
-- [[../02-requirements/functional-requirements#REQ-002]]
-- [[../02-requirements/functional-requirements#REQ-003]]
-- [[../02-requirements/functional-requirements#REQ-004]]
-- [[../02-requirements/functional-requirements#REQ-005]]
-- [[../02-requirements/functional-requirements#REQ-006]]
-
 ---
 
 ## Respondent

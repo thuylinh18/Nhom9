@@ -4,20 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "ec8667ca4c6473e2",
+        "id": "a0892daf7ae4323b",
         "type": "tabs",
         "children": [
           {
-            "id": "4e2e2b6a97b7a1b8",
+            "id": "fedb43ef732b624c",
             "type": "leaf",
             "state": {
-              "type": "bases",
+              "type": "markdown",
               "state": {
-                "file": "Untitled 5.base",
-                "viewName": "Table"
+                "file": "Acceptance Criteria/AC.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-table",
-              "title": "Untitled 5"
+              "icon": "lucide-file",
+              "title": "AC"
             }
           }
         ]
@@ -78,8 +79,7 @@
               "title": "Bookmarks"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -187,24 +187,43 @@
       "bases:Create new base": false
     }
   },
-  "active": "4e2e2b6a97b7a1b8",
+  "active": "fedb43ef732b624c",
   "lastOpenFiles": [
+    "User Stories/User Stories.md",
+    "Use-cases/Use-cases/UC-015-xem_survey_dashboard.md",
+    "Use-cases/Use-cases/UC-014-xem_ket_qua_phan_tich_AI.md",
+    "Use-cases/Use-cases/UC-013-phan_tich_AI.md",
+    "Use-cases/Use-cases/UC-012-xem_feedback.md",
+    "Use-cases/Use-cases/UC-011-xem_ket_qua_survey.md",
+    "Use-cases/Use-cases/UC-010-luu_response_va_feedback.md",
+    "Use-cases/Use-cases/UC-009-submit_response.md",
+    "Use-cases/Use-cases/UC-008-tra_loi_survey.md",
+    "Use-cases/Use-cases/UC-007-xem_survey.md",
+    "Use-cases/Use-cases/UC-006-close_survey.md",
+    "Use-cases/Use-cases/UC-005-publish_survey.md",
+    "Use-cases/Use-cases/UC-004-quan_ly_question.md",
+    "Use-cases/Use-cases/UC-003-chinh_sua_survey.md",
+    "Use-cases/Use-cases/UC-002-tao_survey.md",
+    "Use-cases/Use-cases/UC-001-dang_nhap.md",
+    "Acceptance Criteria/AC.md",
+    "Acceptance Criteria",
+    "User Stories",
+    "Nhom9/vault/04-Product/PRD.md",
+    "Nhom9/vault/00-Index/source-priority.md",
+    "Nhom9/vault/02-Requiments/Functional Requirements.md",
+    "Nhom9/vault/01-Source/Customer Brief.md",
+    "Nhom9/vault/00-Index/Index.md",
+    "Nhom9/vault/02-Requiments/business-rules.md",
+    "Nhom9/vault/01-Source/Interview Notes.md",
+    "Nhom9/vault/03-Domain/Glossary.md",
+    "Nhom9/vault/03-Domain/business-rules.md",
     "Untitled 4.base",
     "Untitled 5.base",
     "Untitled 3.base",
-    "Untitled.md",
-    "Untitled 1.md",
-    "Untitled 2.md",
     "Untitled 2.base",
     "Untitled 1.base",
     "Untitled.canvas",
     "Untitled.base",
-    "docs/requirements.md",
-    "docs/requirement-review.md",
-    "docs/open-questions.md",
-    "docs/glossary.md",
-    "WelcomeWelcome.md",
-    "Untitled",
     "01-Requirements",
     "Idea"
   ]
