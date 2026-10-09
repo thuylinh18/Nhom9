@@ -1,7 +1,6 @@
-import test, { describe, it } from 'node:test';
+import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { mockUsers, initialMockSurveys, mockFeedbacks, mockDashboardMetrics, mockAIAnalysis } from '../src/services/mockData.ts';
-import { api } from '../src/services/api.ts';
+import { mockUsers, initialMockSurveys, mockDashboardMetrics, mockAIAnalysis } from '../src/services/mockData.ts';
 import type { Survey, User, Question } from '../src/types/index.ts';
 
 describe('InsightFlow Frontend Test Suite', () => {
