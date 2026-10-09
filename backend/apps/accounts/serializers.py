@@ -39,3 +39,36 @@ class UserLoginSerializer(TokenObtainPairSerializer):
             'role': self.user.role,
         }
         return data
+
+
+class UserRoleUpdateSerializer(serializers.ModelSerializer):
+    """
+    Serializer for Admin updating user roles.
+    """
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'full_name', 'role']
+        read_only_fields = ['id', 'email', 'full_name']
+
+
+
+class UserRoleUpdateSerializer(serializers.ModelSerializer):
+    """
+    Serializer for Admin updating user roles.
+    """
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'full_name', 'role']
+        read_only_fields = ['id', 'email', 'full_name']
+
+
+
+class UserRoleUpdateSerializer(serializers.ModelSerializer):
+    """
+    Serializer for Admin updating user roles.
+    """
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'full_name', 'role']
+        read_only_fields = ['id', 'email', 'full_name']
+

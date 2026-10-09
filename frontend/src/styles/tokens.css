@@ -1,0 +1,65 @@
+/* InsightFlow Design Tokens — Core v0.1 */
+:root {
+  /* Color Palette */
+  --color-main: #193B2B;
+  --color-secondary: #276746;
+  --color-ai-accent: #B8ED64;
+  --color-bg: #F6F8F4;
+  --color-white: #FFFFFF;
+  --color-border: #CCD8CE;
+  --color-border-light: #DFE7DF;
+  --color-text-primary: #193B2B;
+  --color-text-secondary: #5F766A;
+  --color-text-muted: #789087;
+  --color-success: #276746;
+  --color-warning: #A66B16;
+  --color-error: #A33E3B;
+  --color-info: #467A68;
+
+  /* Additional harmonious utility tints */
+  --color-main-dark: #122B1F;
+  --color-secondary-hover: #1f5338;
+  --color-ai-accent-hover: #a8e54f;
+  --color-ai-accent-tint: #f3fbe7;
+  --color-error-bg: #FDF3F2;
+  --color-success-bg: #EEF7F2;
+  --color-warning-bg: #FEF8EC;
+
+  /* Typography */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-size-48: 48px;
+  --font-size-30: 30px;
+  --font-size-24: 24px;
+  --font-size-20: 20px;
+  --font-size-16: 16px;
+  --font-size-14: 14px;
+  --font-size-12: 12px;
+
+  /* Spacing Scale */
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-64: 64px;
+
+  /* Border Radius */
+  --radius-6: 6px;
+  --radius-8: 8px;
+  --radius-12: 12px;
+  --radius-16: 16px;
+  --radius-pill: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(25, 59, 43, 0.06);
+  --shadow-md: 0 4px 12px rgba(25, 59, 43, 0.08);
+  --shadow-lg: 0 8px 24px rgba(25, 59, 43, 0.10);
+
+  /* Transitions */
+  --transition-fast: 0.15s ease-in-out;
+  --transition-normal: 0.25s ease-in-out;
+}

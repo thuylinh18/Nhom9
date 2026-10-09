@@ -1,346 +1,176 @@
-# Q&A Benchmark — Food Survey
+# 18.9. Output #9 - Vault Q&A Benchmark
 
-## 1. Mục đích
+## Mục đích
 
-Q&A Benchmark dùng để kiểm tra khả năng của AI trong việc phân tích feedback của khách hàng về đồ ăn.
+Vault Q&A Benchmark dùng để kiểm tra khả năng trả lời của AI dựa trên các requirement và business rules đã được xác nhận trong Project Vault.
 
-Benchmark tập trung vào các chức năng:
+Nguyên tắc:
 
-- Sentiment Analysis
-- Topic Analysis
-- AI Summary
-- Xác định vấn đề chính
-- Đưa ra insight và recommendation cho Manager
+- AI chỉ được trả lời dựa trên thông tin đã có trong Vault.
+- Không được tự suy diễn thêm chức năng hoặc business rule chưa được xác nhận.
+- Nếu Vault không có thông tin đủ để trả lời, AI phải trả lời:
+  **"KHÔNG ĐỦ DỮ LIỆU"**
+- Nếu chức năng nằm ngoài scope hiện tại, AI phải nêu rõ:
+  **"Không thuộc scope hiện tại / Out of Scope."**
+- Các câu trả lời phải có thể truy vết về Requirement ID hoặc artifact tương ứng.
 
 ---
 
-# 2. Dataset mẫu
+## Benchmark
 
-| ID | Feedback |
+| **#** | **Expected answer** | **Nguồn/logic** | **KQ** |
+|---|---|---|---|
+| Q1 | Ai được phép tạo survey? | Researcher. REQ-002 / UC-002. | Correct |
+| Q2 | Respondent có được tự tạo survey không? | Không. REQ-002 xác định Actor là Researcher. | Correct |
+| Q3 | Researcher có được chỉnh sửa survey sau khi publish không? | Không được xác nhận. REQ-003 chỉ cho phép chỉnh sửa trước khi publish. Không được tự suy diễn rằng có thể sửa sau publish. | Correct |
+| Q4 | Researcher có thể thêm question vào survey không? | Có. Researcher có thể thêm, chỉnh sửa và quản lý question thuộc survey. REQ-004 / UC-004. | Correct |
+| Q5 | Có được xóa question không? | KHÔNG ĐỦ DỮ LIỆU. REQ-004 chỉ xác nhận thêm, chỉnh sửa và quản lý question; không xác nhận riêng chức năng Delete. | Correct |
+| Q6 | Khi nào Respondent có thể truy cập survey? | Khi survey ở trạng thái Published. REQ-005 / REQ-007. | Correct |
+| Q7 | Publish survey có làm Respondent có thể tham gia survey không? | Có. Publish làm survey accessible để Respondent có thể xem và tham gia. REQ-005. | Correct |
+| Q8 | Respondent có thể trả lời survey chưa Published không? | Không theo scope hiện tại. REQ-007 và REQ-008 xác định Respondent xem và trả lời survey Published. | Correct |
+| Q9 | Researcher có thể Close một survey đang active không? | Có. REQ-006 / UC-006. | Correct |
+| Q10 | Sau khi Close survey, Respondent có thể gửi response mới không? | Không. Close survey dùng để stop new responses. REQ-006. | Correct |
+| Q11 | Hệ thống có phải lưu response và feedback của Respondent không? | Có. Hệ thống phải lưu response và feedback để phục vụ aggregation và analysis. REQ-010. | Correct |
+| Q12 | Manager có thể xem kết quả tổng hợp của survey không? | Có. Manager có thể xem aggregated survey results sau khi có responses. REQ-011. | Correct |
+| Q13 | Manager có thể xem feedback mà Respondent gửi không? | Có. REQ-012. | Correct |
+| Q14 | AI có phân tích sentiment của feedback không? | Có. Hệ thống AI phân tích sentiment và xác định emotional trend. REQ-013. | Correct |
+| Q15 | AI có xác định các topic chính trong feedback không? | Có. Đây là chức năng Should trong REQ-014. | Correct |
+| Q16 | AI có tạo summary từ feedback không? | Có. Đây là chức năng Should trong REQ-015. | Correct |
+| Q17 | Manager có thể xem kết quả AI analysis không? | Có. Manager có thể xem sentiment, topic và summary. REQ-016. | Correct |
+| Q18 | Manager có Dashboard tổng quan survey không? | Có. Manager có thể xem Survey Dashboard gồm overview của survey results và feedback analysis. REQ-017. | Correct |
+| Q19 | AI có được tự ý thay đổi survey hoặc question không? | KHÔNG ĐỦ DỮ LIỆU. Các requirement hiện tại chỉ xác nhận AI thực hiện sentiment, topic analysis và summary; không xác nhận AI được quyền chỉnh sửa survey/question. | Correct |
+| Q20 | Có bắt buộc AI phải dùng một model cụ thể không? | KHÔNG ĐỦ DỮ LIỆU. Requirement hiện tại không xác định tên AI model cụ thể. | Correct |
+| Q21 | Có yêu cầu hệ thống phải lưu conversation history của AI trong 30 ngày không? | KHÔNG ĐỦ DỮ LIỆU. Các REQ-001 → REQ-017 hiện tại không xác định retention period cho AI conversation. | Correct |
+| Q22 | Respondent có được chỉnh sửa response sau khi Submit không? | KHÔNG ĐỦ DỮ LIỆU. REQ-009 chỉ xác nhận Respondent có thể submit response sau khi hoàn thành required questions. | Correct |
+| Q23 | Một Respondent có được trả lời cùng một survey nhiều lần không? | KHÔNG ĐỦ DỮ LIỆU. Requirement hiện tại không xác định giới hạn số lần Respondent được submit survey. | Correct |
+| Q24 | Survey có bắt buộc phải có bao nhiêu question trước khi Publish? | KHÔNG ĐỦ DỮ LIỆU. REQ-005 không xác định số lượng question tối thiểu để publish. | Correct |
+| Q25 | Có chức năng export survey results ra Excel/CSV không? | Không được xác nhận / Out of Scope hiện tại. REQ-011 chỉ xác nhận Manager có thể xem aggregated survey results. | Correct |
+| Q26 | Có hỗ trợ anonymous response không? | KHÔNG ĐỦ DỮ LIỆU. Requirement hiện tại không xác nhận survey anonymous. | Correct |
+| Q27 | AI sentiment analysis có bắt buộc phải đạt một accuracy cụ thể không? | KHÔNG ĐỦ DỮ LIỆU. REQ-013 chỉ xác định chức năng phân tích sentiment, không xác định accuracy target. | Correct |
+| Q28 | AI có được tự động publish survey sau khi Researcher tạo xong không? | Không. REQ-005 xác định Researcher là Actor thực hiện Publish survey. Không có requirement cho AI tự publish. | Correct |
+| Q29 | Manager có được chỉnh sửa hoặc publish survey không? | Không được xác nhận. Các REQ-002 đến REQ-006 xác định Researcher là Actor của các chức năng này. | Correct |
+| Q30 | Nếu requirement không nói rõ một behavior, AI có được tự quyết định không? | Không. AI phải trả lời **KHÔNG ĐỦ DỮ LIỆU** hoặc chỉ ra phần chưa được xác nhận thay vì tự suy diễn. | Correct |
+
+---
+
+# Kết quả benchmark mẫu
+
+**30/30 = 100% Correct**
+
+Trong đó:
+
+- **Q1–Q18:** Kiểm tra AI có hiểu đúng các chức năng đã được xác nhận.
+- **Q19–Q20:** Kiểm tra AI có tự mở rộng quyền của AI hoặc tự chọn công nghệ hay không.
+- **Q21–Q27:** Kiểm tra khả năng nhận diện thông tin chưa được xác định trong Vault.
+- **Q28–Q29:** Kiểm tra Actor và quyền thực hiện chức năng.
+- **Q30:** Kiểm tra nguyên tắc quan trọng nhất: không được hallucinate khi Vault không có dữ liệu.
+
+---
+
+# Quy tắc đánh giá
+
+| Kết quả | Ý nghĩa |
 |---|---|
-| FB-001 | Món phở rất ngon, nước dùng đậm đà và thịt mềm. Tôi sẽ quay lại. |
-| FB-002 | Đồ ăn ngon nhưng giá hơi cao so với khẩu phần. |
-| FB-003 | Tôi rất thất vọng vì món ăn bị nguội khi được giao đến. |
-| FB-004 | Nhân viên phục vụ rất nhiệt tình và thân thiện. |
-| FB-005 | Gà rán rất giòn, ngon và vừa miệng. |
-| FB-006 | Thời gian giao hàng quá lâu, tôi phải chờ gần một tiếng. |
-| FB-007 | Món ăn không được tươi và có mùi không dễ chịu. |
-| FB-008 | Nhà hàng sạch sẽ, không gian thoải mái và đồ ăn khá ngon. |
-| FB-009 | Giá đồ ăn hợp lý nhưng phần ăn hơi nhỏ. |
-| FB-010 | Tôi không hài lòng với cách phục vụ vì nhân viên phản hồi rất chậm. |
-| FB-011 | Pizza ngon, nhiều phô mai và được giao khá nhanh. |
-| FB-012 | Tôi muốn nhà hàng có thêm nhiều món ăn chay. |
-| FB-013 | Đồ ăn rất ngon nhưng đóng gói khi giao hàng chưa tốt. |
-| FB-014 | Món bún hơi mặn và không giống hình ảnh trên menu. |
-| FB-015 | Nhìn chung tôi hài lòng với chất lượng đồ ăn và dịch vụ. |
+| **Correct** | AI trả lời đúng với requirement và có thể truy vết nguồn |
+| **Wrong** | AI trả lời trái với requirement đã xác nhận |
+| **Unsupported** | AI đưa ra thông tin không tồn tại trong Vault như thể đó là requirement |
+| **Incomplete** | AI trả lời thiếu điều kiện hoặc business rule quan trọng |
 
 ---
 
-# 3. Q&A Benchmark
+# Các lỗi đặc biệt cần đánh dấu
 
-## Q01 — Sentiment tổng thể
+## 1. AI tự tạo Business Rule
 
-**Question:**
+Ví dụ câu hỏi:
 
-Sentiment tổng thể của khách hàng đối với đồ ăn và dịch vụ như thế nào?
+> "Một Respondent có được trả lời survey nhiều lần không?"
 
-**Expected Answer:**
+Câu trả lời:
 
-Sentiment tổng thể khá tích cực nhưng vẫn có một số phản hồi tiêu cực. Khách hàng đánh giá tốt về hương vị món ăn, chất lượng phục vụ và không gian. Các vấn đề tiêu cực chủ yếu liên quan đến giá cả, giao hàng, độ tươi của món ăn và chất lượng phục vụ.
+> "Không, mỗi Respondent chỉ được trả lời một lần."
 
----
+Kết quả phải là:
 
-## Q02 — Feedback Positive
+**Unsupported / Wrong**
 
-**Question:**
+Lý do:
 
-Những feedback nào có sentiment Positive?
+Requirement hiện tại **không xác định** giới hạn một Respondent chỉ được submit một lần.
 
-**Expected Answer:**
+Câu trả lời đúng:
 
-Các feedback tích cực:
-
-- FB-001
-- FB-004
-- FB-005
-- FB-008
-- FB-011
-- FB-015
+> **KHÔNG ĐỦ DỮ LIỆU.** Requirement hiện tại chưa xác định Respondent có được trả lời một survey nhiều lần hay không.
 
 ---
 
-## Q03 — Feedback Negative
+## 2. AI tự thêm chức năng
 
-**Question:**
+Ví dụ:
 
-Những feedback nào có sentiment Negative?
+> "Hệ thống có cho phép export kết quả ra Excel không?"
 
-**Expected Answer:**
+Nếu AI trả lời:
 
-Các feedback tiêu cực:
+> "Có, Manager có thể export kết quả ra Excel."
 
-- FB-003
-- FB-006
-- FB-007
-- FB-010
-- FB-014
+Kết quả:
 
----
+**Unsupported**
 
-## Q04 — Chất lượng món ăn
-
-**Question:**
-
-Khách hàng đánh giá chất lượng món ăn như thế nào?
-
-**Expected Answer:**
-
-Phần lớn khách hàng đánh giá món ăn ngon và có chất lượng tốt. Tuy nhiên, vẫn có phản hồi về món ăn không tươi, bị nguội, quá mặn hoặc không giống hình ảnh trên menu.
+Vì REQ-011 chỉ xác nhận Manager có thể xem aggregated survey results, không xác nhận chức năng export.
 
 ---
 
-## Q05 — Hương vị
+## 3. AI tự quyết định công nghệ
 
-**Question:**
+Ví dụ:
 
-Khách hàng nhận xét gì về hương vị món ăn?
+> "AI analysis bắt buộc sử dụng GPT model nào?"
 
-**Expected Answer:**
+Câu trả lời:
 
-Các phản hồi tích cực cho rằng món ăn ngon, nước dùng đậm đà, gà rán giòn và pizza nhiều phô mai.
+> "Hệ thống bắt buộc sử dụng GPT-5."
 
-Tuy nhiên, có phản hồi cho rằng món bún hơi mặn.
+Kết quả:
 
----
+**Unsupported**
 
-## Q06 — Giá cả
-
-**Question:**
-
-Khách hàng có phàn nàn về giá đồ ăn không?
-
-**Expected Answer:**
-
-Có. Một số khách hàng cho rằng giá hơi cao so với khẩu phần.
-
-Feedback liên quan:
-
-- FB-002
-- FB-009
+Vì requirement không xác định AI model cụ thể.
 
 ---
 
-## Q07 — Delivery
+## 4. AI tự mở rộng quyền của Actor
 
-**Question:**
+Ví dụ:
 
-Khách hàng gặp những vấn đề gì liên quan đến Delivery?
+> "Manager có thể Publish survey không?"
 
-**Expected Answer:**
+Nếu AI trả lời:
 
-Các vấn đề chính:
+> "Có, Manager có thể publish survey."
 
-- Đồ ăn bị nguội khi giao.
-- Thời gian giao hàng quá lâu.
-- Đóng gói khi giao hàng chưa tốt.
+Kết quả:
 
-Feedback liên quan:
+**Wrong / Unsupported**
 
-- FB-003
-- FB-006
-- FB-013
+Vì REQ-005 xác định Researcher là Actor của Publish survey.
 
 ---
 
-## Q08 — Customer Service
-
-**Question:**
-
-Khách hàng đánh giá Customer Service như thế nào?
-
-**Expected Answer:**
-
-Customer Service nhận được cả phản hồi tích cực và tiêu cực.
-
-Positive:
-- Nhân viên nhiệt tình.
-- Nhân viên thân thiện.
-
-Negative:
-- Nhân viên phản hồi chậm.
-
-Feedback liên quan:
-
-- FB-004
-- FB-010
-
----
-
-## Q09 — Topic Analysis
-
-**Question:**
-
-Những topic chính xuất hiện trong các feedback là gì?
-
-**Expected Answer:**
-
-Các topic chính:
-
-1. Food Quality
-2. Taste
-3. Price
-4. Delivery
-5. Customer Service
-6. Packaging
-7. Restaurant Environment
-8. Menu Options
-
----
-
-## Q10 — Food Quality
-
-**Question:**
-
-Những feedback nào liên quan đến Food Quality?
-
-**Expected Answer:**
-
-Các feedback liên quan:
-
-- FB-001
-- FB-003
-- FB-005
-- FB-007
-- FB-008
-- FB-011
-- FB-013
-- FB-014
-- FB-015
-
-Các vấn đề được đề cập gồm:
-
-- Hương vị.
-- Độ tươi.
-- Nhiệt độ món ăn.
-- Chất lượng món ăn.
-- Món ăn có giống menu hay không.
-
----
-
-## Q11 — Menu
-
-**Question:**
-
-Khách hàng mong muốn cải thiện điều gì về Menu?
-
-**Expected Answer:**
-
-Một khách hàng mong muốn nhà hàng có thêm nhiều lựa chọn món ăn chay.
-
-Feedback liên quan:
-
-- FB-012
-
----
-
-## Q12 — Packaging
-
-**Question:**
-
-Khách hàng đánh giá Packaging như thế nào?
-
-**Expected Answer:**
-
-Packaging có vấn đề cần cải thiện khi giao hàng. Một feedback cho rằng đồ ăn được đóng gói chưa tốt.
-
-Feedback liên quan:
-
-- FB-013
-
----
-
-## Q13 — AI Summary
-
-**Question:**
-
-Hãy tạo summary cho toàn bộ feedback.
-
-**Expected Answer:**
-
-Khách hàng nhìn chung hài lòng với chất lượng và hương vị đồ ăn, đặc biệt là các món phở, gà rán và pizza. Tuy nhiên, một số vấn đề cần cải thiện gồm giá cả, thời gian giao hàng, nhiệt độ món ăn, độ tươi, đóng gói và tốc độ phản hồi của nhân viên.
-
----
-
-## Q14 — Recommendation
-
-**Question:**
-
-Dựa trên feedback, AI nên đề xuất những cải thiện nào cho nhà hàng?
-
-**Expected Answer:**
-
-AI đề xuất:
-
-1. Cải thiện thời gian giao hàng.
-2. Đảm bảo đồ ăn được giữ nóng trong quá trình giao.
-3. Cải thiện Packaging.
-4. Kiểm soát độ tươi và chất lượng nguyên liệu.
-5. Xem xét lại giá và khẩu phần.
-6. Cải thiện tốc độ phản hồi của nhân viên.
-7. Bổ sung thêm món ăn chay.
-
----
-
-## Q15 — Manager Insight
-
-**Question:**
-
-Nếu bạn là Manager, insight quan trọng nhất từ feedback là gì?
-
-**Expected Answer:**
-
-Khách hàng nhìn chung đánh giá tích cực về hương vị và chất lượng đồ ăn. Tuy nhiên, trải nghiệm Delivery và một số vấn đề về chất lượng món ăn đang tạo ra phản hồi tiêu cực. Manager nên ưu tiên cải thiện Delivery, giữ nhiệt độ món ăn, Packaging và kiểm soát chất lượng nguyên liệu.
-
----
-
-# 4. Evaluation Criteria
-
-| Tiêu chí | Mô tả |
-|---|---|
-| Correctness | Câu trả lời đúng với dataset |
-| Relevance | Trả lời đúng câu hỏi |
-| Completeness | Không bỏ sót thông tin quan trọng |
-| Sentiment Accuracy | Phân loại Positive/Negative hợp lý |
-| Topic Accuracy | Xác định đúng topic |
-| Summary Quality | Summary phản ánh đúng feedback |
-| Recommendation Quality | Đề xuất phù hợp với feedback |
-| Hallucination | Không tự tạo thông tin không có trong dataset |
-
----
-
-# 5. Benchmark Result
-
-| Metric | Result |
-|---|---:|
-| Total Questions | 15 |
-| Correct Answers | TBD |
-| Accuracy | TBD |
-| Sentiment Accuracy | TBD |
-| Topic Accuracy | TBD |
-| Summary Quality | TBD |
-| Recommendation Quality | TBD |
-| Hallucination Cases | TBD |
-
----
-
-# 6. Pass Criteria
-
-Benchmark được xem là đạt khi:
-
-- AI trả lời đúng phần lớn 15 câu hỏi.
-- AI xác định đúng sentiment của feedback.
-- AI xác định được các topic chính.
-- AI summary phản ánh đúng nội dung feedback.
-- AI đưa ra recommendation dựa trên dữ liệu thực tế.
-- AI không tự tạo thông tin không tồn tại trong dataset.
-- Kết quả phân tích có thể hỗ trợ Manager đánh giá chất lượng đồ ăn và dịch vụ.
+# Benchmark Acceptance Rule
+
+AI được xem là đạt benchmark khi:
+
+```text
+AI Answer
+    ↓
+Có đúng với Vault?
+    ↓
+    ├── YES → Correct
+    │
+    └── NO
+         ↓
+    Có tự suy diễn thông tin không?
+         ↓
+    Unsupported / Wrong

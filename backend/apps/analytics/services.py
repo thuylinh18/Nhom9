@@ -55,23 +55,11 @@ def get_survey_results(survey: Survey) -> Dict[str, Any]:
     }
 
 
-def perform_ai_analysis(survey: Survey) -> AIAnalysisResult:
+def _rule_based_fallback_analysis(feedbacks, count: int) -> Dict[str, Any]:
     """
-    Performs AI feedback analysis (sentiment, topics, summary) without mutating original feedback (US-013 / BR-004 / BR-005).
-    Uses a rule-based AI engine for local development with deterministic results.
+    Deterministic rule-based fallback analysis engine (Section 8 of AI Feature Spec).
+    Used when external LLM provider is unreachable or in offline testing.
     """
-    feedbacks = survey.feedbacks.all()
-    count = feedbacks.count()
-
-    if count == 0:
-        return AIAnalysisResult.objects.create(
-            survey=survey,
-            sentiment=SentimentType.NEUTRAL,
-            sentiment_breakdown={'positive': 0, 'neutral': 100, 'negative': 0},
-            topics=['General Feedback'],
-            summary="No customer feedback has been submitted yet for this survey.",
-        )
-
     pos_keywords = {'good', 'great', 'helpful', 'friendly', 'satisfied', 'excellent', 'love', 'awesome', 'fast', 'best', 'tot', 'hai long', 'tuyet'}
     neg_keywords = {'slow', 'wait', 'poor', 'bad', 'problem', 'difficult', 'terrible', 'issue', 'worst', 'cham', 'cho', 'kem', 'te', 'that vong'}
 
@@ -108,9 +96,7 @@ def perform_ai_analysis(survey: Survey) -> AIAnalysisResult:
 
     pos_pct = round((pos_count / count) * 100)
     neg_pct = round((neg_count / count) * 100)
-    neu_pct = 100 - (pos_pct + neg_pct)
-    if neu_pct < 0:
-        neu_pct = 0
+    neu_pct = max(0, 100 - (pos_pct + neg_pct))
 
     if pos_count > neg_count and pos_count >= neu_count:
         dominant_sentiment = SentimentType.POSITIVE
@@ -124,22 +110,60 @@ def perform_ai_analysis(survey: Survey) -> AIAnalysisResult:
         detected_topics = ['Customer Service']
 
     if dominant_sentiment == SentimentType.POSITIVE:
-        summary_text = f"Most respondents had a positive experience. Frequently mentioned highlights include: {', '.join(detected_topics)}."
+        summary_text = f"Đa số người tham gia có trải nghiệm tích cực. Các điểm nổi bật chính bao gồm: {', '.join(detected_topics)}."
     elif dominant_sentiment == SentimentType.NEGATIVE:
-        summary_text = f"Most respondents were satisfied with staff support, but response time was a recurring concern across feedback."
+        summary_text = f"Phản hồi ghi nhận nhiều phản ánh cần cải thiện, đặc biệt liên quan đến: {', '.join(detected_topics)}."
     else:
-        summary_text = f"Feedback is balanced across {count} response(s). Primary discussion areas: {', '.join(detected_topics)}."
+        summary_text = f"Ý kiến phản hồi phân bố cân bằng giữa các khía cạnh dịch vụ: {', '.join(detected_topics)}."
 
-    result = AIAnalysisResult.objects.create(
-        survey=survey,
-        sentiment=dominant_sentiment,
-        sentiment_breakdown={
+    return {
+        'dominant_sentiment': dominant_sentiment,
+        'sentiment_breakdown': {
             'positive': pos_pct,
             'neutral': neu_pct,
             'negative': neg_pct,
         },
-        topics=detected_topics,
-        summary=summary_text,
+        'topics': detected_topics,
+        'summary': summary_text,
+    }
+
+
+def perform_ai_analysis(survey: Survey) -> AIAnalysisResult:
+    """
+    Performs AI feedback analysis (sentiment, topics, summary) without mutating original feedback (US-013 / BR-004 / BR-005).
+    Calls Google Gemini AI API directly when configured, with safe local fallback.
+    """
+    from .gemini_service import call_gemini_api
+
+    feedbacks = survey.feedbacks.all()
+    count = feedbacks.count()
+
+    # Section 4.3 & 14.3: Edge case - No feedback submitted
+    if count == 0:
+        return AIAnalysisResult.objects.create(
+            survey=survey,
+            sentiment=SentimentType.NEUTRAL,
+            sentiment_breakdown={'positive': 0, 'neutral': 100, 'negative': 0},
+            topics=['General Feedback'],
+            summary="Chưa có phản hồi nào được ghi nhận cho khảo sát này. No customer feedback has been submitted yet for this survey.",
+        )
+
+    # Prepare feedback list for AI
+    feedbacks_payload = [{"id": str(fb.id), "text": fb.text} for fb in feedbacks]
+
+    # Attempt real Google Gemini LLM call
+    try:
+        ai_data = call_gemini_api(feedbacks_payload)
+    except Exception as exc:
+        # Fallback to local rule-based engine if offline or API quota issue
+        ai_data = _rule_based_fallback_analysis(feedbacks, count)
+
+    result = AIAnalysisResult.objects.create(
+        survey=survey,
+        sentiment=ai_data['dominant_sentiment'],
+        sentiment_breakdown=ai_data['sentiment_breakdown'],
+        topics=ai_data['topics'],
+        summary=ai_data['summary'],
     )
     return result
 

@@ -62,3 +62,24 @@ class TestAuthentication:
         url = reverse('auth-me')
         response = api_client.get(url)
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    def test_admin_can_list_users(self, auth_client, admin_user):
+        client = auth_client(admin_user)
+        url = reverse('auth-user-list')
+        response = client.get(url)
+        assert response.status_code == status.HTTP_200_OK
+        assert len(response.data) >= 1
+
+    def test_non_admin_cannot_list_users(self, auth_client, researcher_user):
+        client = auth_client(researcher_user)
+        url = reverse('auth-user-list')
+        response = client.get(url)
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+
+    def test_admin_can_update_user_role(self, auth_client, admin_user, respondent_user):
+        client = auth_client(admin_user)
+        url = reverse('auth-user-detail', kwargs={'id': respondent_user.id})
+        response = client.patch(url, {'role': 'RESEARCHER'}, format='json')
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data['role'] == 'RESEARCHER'
+

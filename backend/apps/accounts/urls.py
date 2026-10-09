@@ -4,6 +4,8 @@ from .views import (
     LoginView,
     RefreshTokenView,
     RegisterView,
+    UserAdminDetailView,
+    UserListView,
 )
 
 urlpatterns = [
@@ -11,4 +13,6 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='auth-login'),
     path('refresh/', RefreshTokenView.as_view(), name='auth-refresh'),
     path('me/', CurrentUserView.as_view(), name='auth-me'),
+    path('users/', UserListView.as_view(), name='auth-user-list'),
+    path('users/<uuid:id>/', UserAdminDetailView.as_view(), name='auth-user-detail'),
 ]
