@@ -61,7 +61,7 @@ describe('InsightFlow Frontend Test Suite', () => {
       const published = initialMockSurveys.find(s => s.status === 'PUBLISHED');
       assert.ok(published, 'Should have at least one published survey in mock data');
       const canEdit = (survey: Survey) => survey.status === 'DRAFT';
-      assert.strictEqual(canEdit(published), false);
+      assert.strictEqual(canEdit(published!), false);
     });
 
     it('TC-014: Cannot publish survey without questions (BR-003)', () => {
@@ -168,7 +168,7 @@ describe('InsightFlow Frontend Test Suite', () => {
       const usersList = Object.values(mockUsers);
       const search = 'sarah';
       const filtered = usersList.filter(u =>
-        u.email.toLowerCase().includes(search) || u.full_name.toLowerCase().includes(search)
+        u.email.toLowerCase().includes(search) || (u.full_name || '').toLowerCase().includes(search)
       );
       assert.strictEqual(filtered.length, 1);
       assert.strictEqual(filtered[0].full_name, 'Dr. Sarah Connor');

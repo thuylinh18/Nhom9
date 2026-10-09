@@ -5,6 +5,7 @@ export interface User {
   email: string;
   full_name?: string;
   role: UserRole;
+  is_active?: boolean;
   created_at?: string;
 }
 
@@ -20,6 +21,7 @@ export interface Question {
   type?: string;
   required?: boolean;
   is_required?: boolean;
+  order?: number;
   options?: string[];
   created_at?: string;
   updated_at?: string;
@@ -35,6 +37,7 @@ export interface Survey {
   questions?: Question[];
   questions_count?: number;
   response_count?: number;
+  closed_at?: string;
   created_at?: string;
   updated_at?: string;
 }
