@@ -1,0 +1,46 @@
+name: CD Pipeline - Continuous Deployment
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy-backend-render:
+    name: Deploy Backend to Render
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Trigger Render Deploy Hook
+        env:
+          RENDER_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -n "$RENDER_HOOK" ]; then
+            echo "Calling Render Deploy Hook..."
+            curl -s -X POST "$RENDER_HOOK"
+            echo "Render deployment triggered successfully!"
+          else
+            echo "Render auto-deploys automatically via GitHub App Integration using backend/build.sh and backend/Procfile."
+          fi
+
+  deploy-frontend-vercel:
+    name: Deploy Frontend to Vercel
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Trigger Vercel Deploy Hook
+        env:
+          VERCEL_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -n "$VERCEL_HOOK" ]; then
+            echo "Calling Vercel Deploy Hook..."
+            curl -s -X POST "$VERCEL_HOOK"
+            echo "Vercel deployment triggered successfully!"
+          else
+            echo "Vercel auto-deploys automatically via GitHub App Integration using frontend/vercel.json."
+          fi

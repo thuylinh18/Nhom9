@@ -1,4 +1,4 @@
-name: CI/CD Pipeline - InsightFlow
+name: CI Pipeline - Continuous Integration
 
 on:
   push:
