@@ -68,7 +68,11 @@ Thư mục `06-technical/` chứa tài liệu kiến trúc, công nghệ, databa
 
 ## 7. Testing
 
-Thư mục `07-testing/` chứa test plan, test cases và kết quả kiểm thử.
+Thư mục `07-testing/` chứa test plan, test cases, bug log và kết quả kiểm thử.
+
+| File | Status | Description |
+|---|---|---|
+| [[../07-testing/Bug Log]] | DRAFT | Các lỗi đã xác nhận từ source review và kế hoạch kiểm thử hồi quy |
 
 **Status:** CURRENT
 
